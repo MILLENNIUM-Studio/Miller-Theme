@@ -50,3 +50,4 @@ Miller - [MILLENNIUM Studio](https://github.com/MILLENNIUM-Studio/)
 ## 支持
 
 如果你喜欢这个主题，请给它一个 Star ⭐️
+Powered By MILLENNIUM Studio
