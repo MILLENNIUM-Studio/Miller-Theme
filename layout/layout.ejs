@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="<%= config.language %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 网站图标 -->
+    <link rel="icon" type="image/png" href="https://ooo.0x0.ooo/2025/01/24/OGr4hS.png">
+    <link rel="apple-touch-icon" href="https://ooo.0x0.ooo/2025/01/24/OGr4hS.png">
+    <link rel="shortcut icon" type="image/png" href="https://ooo.0x0.ooo/2025/01/24/OGr4hS.png">
+    <title><%= page.title || config.title %></title>
+    <%- css('css/style.css') %>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Poppins:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="https://ooo.0x0.ooo/2025/01/24/OGr4hS.png" alt="MILLENNIUM Studio Logo">
+                </div>
+                <div class="title-group">
+                    <h1><a href="<%- url_for() %>"><%= config.title %></a></h1>
+                    <p class="subtitle"><%= config.subtitle %></p>
+                </div>
+                <div class="menu-toggle">
+                    <div class="menu-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="menu-overlay">
+            <nav class="menu-content">
+                <div class="menu-section">
+                    <h3>分类</h3>
+                    <div class="category-list">
+                        <% site.categories.each(function(category) { %>
+                            <div class="category-list-item">
+                                <a href="<%- url_for(category.path) %>"><%= category.name %></a>
+                                <span class="category-list-count"><%= category.length %></span>
+                            </div>
+                        <% }) %>
+                    </div>
+                </div>
+                <div class="menu-section">
+                    <h3>友情链接</h3>
+                    <ul class="friend-links">
+                        <li><a href="http://120.24.190.132/home" target="_blank">火星编程Online Judge</a></li>
+                        <li><a href="https://www.googoltech.com.cn/index.html" target="_blank">固高科技</a></li>
+                        <li><a href="https://dgsyhxx.dgjy.net/" target="_blank">东莞市粤华学校</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <%- body %>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>
+                &copy; <%= date(new Date(), 'YYYY') %> <%= config.author %>
+                <span class="footer-divider">|</span>
+                <span class="theme-info">Designed by <a href="https://github.com/lumingfeng" target="_blank">Miller Theme</a></span>
+            </p>
+        </div>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const menuOverlay = document.querySelector('.menu-overlay');
+            
+            menuToggle.addEventListener('click', function() {
+                menuToggle.classList.toggle('active');
+                menuOverlay.classList.toggle('active');
+                document.body.style.overflow = menuOverlay.classList.contains('active') ? 'hidden' : '';
+            });
+            
+            // 点击菜单外部关闭菜单
+            menuOverlay.addEventListener('click', function(e) {
+                if (e.target === menuOverlay) {
+                    menuToggle.classList.remove('active');
+                    menuOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html> 
