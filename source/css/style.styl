@@ -18,6 +18,9 @@
     --radius-lg: 16px
     --radius-xl: 24px
     --radius-full: 9999px
+    // 添加媒体查询断点变量
+    --mobile-width: 768px
+    --tablet-width: 1024px
 
 // 深色模式变量
 @media (prefers-color-scheme: dark)
@@ -41,9 +44,10 @@ body
     background: var(--bg-gradient)
     min-height: 100vh
     transition: all 0.3s ease
-    padding-top: 100px
+    padding-top: 80px
     display: flex
     flex-direction: column
+    position: relative
 
 .container
     max-width: 800px
@@ -51,12 +55,18 @@ body
     padding: 0 1rem
     position: relative
     z-index: 2
+    width: 100%
+    box-sizing: border-box
 
 // 主要内容区域
 main.container
     flex: 1 0 auto
     width: 100%
-    margin-bottom: 3rem
+    margin-bottom: 1rem
+
+    @media (max-width: var(--mobile-width))
+        padding: 0 1rem
+        margin-bottom: 0.5rem
 
 // 头部样式
 header
@@ -68,7 +78,7 @@ header
     left: 0
     right: 0
     z-index: 10
-    height: 80px
+    height: 60px
     display: flex
     align-items: center
     box-shadow: 0 2px 15px var(--shadow)
@@ -78,11 +88,116 @@ header
         display: flex
         align-items: center
         justify-content: space-between
-        gap: 1.5rem
+        gap: 1rem
         height: 100%
         width: 100%
         max-width: 800px
         margin: 0 auto
+        padding: 0 1rem
+        box-sizing: border-box
+
+        .logo
+            height: 35px
+            flex-shrink: 0
+            
+            img
+                height: 100%
+                width: auto
+                object-fit: contain
+
+        .title-group
+            flex: 1
+            min-width: 0
+            
+            h1
+                font-size: 1.2rem
+                margin: 0
+                font-weight: 600
+                line-height: 1.2
+                
+                a
+                    color: var(--text-primary)
+                    text-decoration: none
+
+                .mobile-title
+                    display: none
+                
+                @media (max-width: var(--mobile-width))
+                    h1 .desktop-title
+                        display: none
+                    
+                    h1 .mobile-title
+                        display: block
+
+            .subtitle
+                color: var(--text-secondary)
+                margin: 0.2rem 0 0
+                font-size: 0.75rem
+                opacity: 0.8
+
+        .menu-toggle
+            width: 40px
+            height: 40px
+            flex-shrink: 0
+            display: flex
+            align-items: center
+            justify-content: center
+            cursor: pointer
+            
+            .menu-icon
+                width: 20px
+                height: 14px
+                position: relative
+                
+                span
+                    display: block
+                    position: absolute
+                    height: 2px
+                    width: 100%
+                    background: var(--text-primary)
+                    border-radius: var(--radius-full)
+                    transition: all 0.3s ease
+                    
+                    &:nth-child(1)
+                        top: 0
+                    
+                    &:nth-child(2)
+                        top: 6px
+                    
+                    &:nth-child(3)
+                        top: 12px
+
+            &.active
+                .menu-icon
+                    span
+                        &:nth-child(1)
+                            transform: rotate(45deg)
+                            top: 6px
+                        
+                        &:nth-child(2)
+                            opacity: 0
+                        
+                        &:nth-child(3)
+                            transform: rotate(-45deg)
+                            top: 6px
+
+    @media (max-width: var(--mobile-width))
+        .header-content
+            gap: 0.5rem
+            
+            .logo
+                height: 30px
+            
+            .title-group
+                h1
+                    font-size: 1rem
+                
+                .subtitle
+                    display: none
+            
+            .menu-toggle
+                width: 32px
+                height: 32px
 
     .logo, .title-group
         flex-shrink: 0
@@ -92,7 +207,7 @@ header
         transition: transform 0.3s ease
         
         img
-            max-height: 50px
+            max-height: 35px
             width: auto
             filter: drop-shadow(0 2px 4px var(--shadow))
             transition: transform 0.3s ease
@@ -127,54 +242,6 @@ header
         font-size: 0.85rem
         opacity: 0.8
 
-    .menu-toggle
-        margin-left: auto
-        cursor: pointer
-        padding: 1rem
-        transition: transform 0.3s ease
-        z-index: 12
-        position: relative
-        display: flex
-        align-items: center
-        height: 100%
-
-        .menu-icon
-            width: 24px
-            height: 18px
-            position: relative
-            
-            span
-                display: block
-                position: absolute
-                height: 2px
-                width: 100%
-                background: var(--text-primary)
-                border-radius: var(--radius-full)
-                transition: all 0.3s ease
-                
-                &:nth-child(1)
-                    top: 0
-                
-                &:nth-child(2)
-                    top: 8px
-                
-                &:nth-child(3)
-                    top: 16px
-
-        &.active
-            .menu-icon
-                span
-                    &:nth-child(1)
-                        transform: rotate(45deg)
-                        top: 8px
-                    
-                    &:nth-child(2)
-                        opacity: 0
-                    
-                    &:nth-child(3)
-                        transform: rotate(-45deg)
-                        top: 8px
-
     .menu-overlay
         position: absolute
         top: 100%
@@ -187,7 +254,7 @@ header
         visibility: hidden
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1)
         transform: translateY(-10px)
-        z-index: 9
+        z-index: 99
         box-shadow: 0 4px 20px var(--shadow)
         max-height: 0
         overflow: hidden
@@ -196,17 +263,24 @@ header
             opacity: 1
             visibility: visible
             transform: translateY(0)
-            max-height: calc(100vh - 80px)
+            max-height: calc(100vh - 60px)
+            overflow-y: auto
+
+        @media (max-width: var(--mobile-width))
+            height: calc(100vh - 60px)
+            position: fixed
+            top: 60px
+            .menu-toggle
+                width: 36px
+                height: 36px
+                margin-right: 0
 
     .menu-content
-        position: relative
         padding: 2rem
         width: 100%
         max-width: 800px
-        max-height: calc(100vh - 80px)
-        overflow-y: auto
         margin: 0 auto
-        z-index: 11
+        box-sizing: border-box
 
     .menu-section
         background: var(--bg-card)
@@ -214,13 +288,13 @@ header
         padding: 1.5rem
         margin-bottom: 1.5rem
         box-shadow: 0 4px 15px var(--shadow)
+        border: 1px solid rgba(255, 255, 255, 0.1)
 
         h3
             font-size: 1.1rem
             margin-bottom: 1.5rem
             color: var(--text-primary)
             font-weight: 600
-            letter-spacing: 0.5px
             position: relative
             
             &:after
@@ -233,125 +307,122 @@ header
                 background: var(--accent-color)
                 border-radius: var(--radius-full)
 
-        .category-list
-            display: grid
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr))
-            gap: 0.5rem
-
-            .category-list-item
-                background: var(--blur-bg)
-                padding: 0.75rem 1rem
-                border-radius: var(--radius-md)
-                transition: all 0.3s ease
-                border: 1px solid rgba(255, 255, 255, 0.1)
-                position: relative
-                overflow: hidden
-                display: flex
-                align-items: center
-                justify-content: space-between
-                
-                a
-                    color: var(--text-primary)
-                    text-decoration: none
-                    font-weight: 500
-                    flex: 1
-                
-                .category-list-count
-                    margin-left: 0.5rem
-                    background: rgba(255, 255, 255, 0.15)
-                    padding: 0.2rem 0.6rem
-                    border-radius: var(--radius-sm)
-                    font-size: 0.85em
-                    font-weight: 500
-                    color: var(--text-primary)
-                
-                &:before
-                    content: ''
-                    position: absolute
-                    top: 0
-                    left: 0
-                    width: 100%
-                    height: 100%
-                    background: linear-gradient(
-                        120deg,
-                        transparent,
-                        rgba(255, 255, 255, 0.1),
-                        transparent
-                    )
-                    transform: translateX(-100%)
-                    transition: 0.6s
-
-                &:hover
-                    transform: translateY(-2px)
-                    background: var(--accent-color)
-                    border-color: var(--accent-color)
-                    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3)
-                    
-                    a, .category-list-count
-                        color: #fff
-                    
-                    &:before
-                        transform: translateX(100%)
-
-    .friend-links
+    .category-list
         display: grid
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr))
         gap: 0.5rem
 
-        li a
+        .category-list-item
             background: var(--blur-bg)
             padding: 0.75rem 1rem
             border-radius: var(--radius-md)
             transition: all 0.3s ease
-            display: flex
-            align-items: center
+            border: 1px solid rgba(255, 255, 255, 0.1)
             position: relative
             overflow: hidden
-            border: 1px solid rgba(255, 255, 255, 0.1)
-            font-weight: 500
-            color: var(--text-primary)
+            display: flex
+            align-items: center
+            justify-content: space-between
             text-decoration: none
-            
-            &:before
-                content: ''
-                position: absolute
-                top: 0
-                left: 0
-                width: 100%
-                height: 100%
-                background: linear-gradient(
-                    120deg,
-                    transparent,
-                    rgba(255, 255, 255, 0.1),
-                    transparent
-                )
-                transform: translateX(-100%)
-                transition: 0.6s
+            color: var(--text-primary)
 
-            &:hover
-                background: var(--accent-color)
-                color: #fff
-                transform: translateY(-2px)
-                box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3)
-                border-color: var(--accent-color)
-                
-                &:before
-                    transform: translateX(100%)
+            a
+                color: var(--text-primary)
+                text-decoration: none
+                font-weight: 500
+                flex: 1
+
+            .category-list-count
+                margin-left: 0.5rem
+                background: rgba(255, 255, 255, 0.15)
+                padding: 0.2rem 0.6rem
+                border-radius: var(--radius-sm)
+                font-size: 0.85em
+                font-weight: 500
+                color: var(--text-primary)
+
+    .friend-links
+        list-style: none
+        padding: 0
+        margin: 0
+        display: grid
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr))
+        gap: 0.5rem
+
+        li
+            margin: 0
+
+            a
+                background: var(--blur-bg)
+                padding: 0.75rem 1rem
+                border-radius: var(--radius-md)
+                transition: all 0.3s ease
+                display: flex
+                align-items: center
+                border: 1px solid rgba(255, 255, 255, 0.1)
+                color: var(--text-primary)
+                text-decoration: none
+                font-weight: 500
+                position: relative
+                overflow: hidden
+
+                &:hover
+                    background: var(--accent-color)
+                    color: #fff
+                    transform: translateY(-2px)
+                    border-color: var(--accent-color)
+                    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3)
+
+    @media (max-width: var(--mobile-width))
+        .menu-content
+            padding: 1rem
+            
+        .menu-section
+            padding: 1rem
+            margin-bottom: 1rem
+            
+            h3
+                font-size: 1rem
+                margin-bottom: 1rem
+
+        .category-list,
+        .friend-links
+            grid-template-columns: 1fr
 
 // 文章样式
 article
     background: var(--bg-card)
     backdrop-filter: blur(5px)
     -webkit-backdrop-filter: blur(5px)
-    padding: 2rem
+    padding: 1.5rem
     border-radius: var(--radius-lg)
     box-shadow: 0 4px 20px var(--shadow)
-    margin-bottom: 3rem
+    margin-bottom: 1rem
     transition: all 0.3s ease
     position: relative
     z-index: 3
     border: 1px solid rgba(255, 255, 255, 0.1)
-    margin-top: 1rem
+    margin-top: 0.5rem
+    width: 100%
+    box-sizing: border-box
+    overflow: hidden
+
+    @media (max-width: var(--mobile-width))
+        padding: 1rem
+        margin-bottom: 1rem
+        
+        .title
+            font-size: 1.2rem
+            margin-bottom: 0.5rem
+            line-height: 1.4
+            
+        .meta
+            flex-direction: column
+            gap: 0.5rem
+            margin-bottom: 0.5rem
+            
+            span
+                margin-right: 0
 
     &:hover
         transform: translateY(-5px)
@@ -359,10 +430,11 @@ article
         box-shadow: 0 8px 30px var(--shadow)
 
     .title
-        font-size: 2rem
+        font-size: 1.5rem
         margin-bottom: 1rem
         font-weight: 600
-        letter-spacing: -0.5px
+        word-wrap: break-word
+        line-height: 1.4
         
         a
             color: var(--text-primary)
@@ -412,33 +484,33 @@ article
 .pagination
     text-align: center
     margin: 3rem 0
-    
+
+    @media (max-width: var(--mobile-width))
+        margin: 2rem 0
+
     .page-number,
     .extend
         display: inline-block
+        padding: 0.5rem 1rem
         margin: 0 0.3rem
-        padding: 0.6rem 1.2rem
-        background: var(--blur-bg)
-        backdrop-filter: blur(5px)
-        -webkit-backdrop-filter: blur(5px)
         color: var(--text-primary)
         text-decoration: none
+        background: var(--blur-bg)
         border-radius: var(--radius-md)
-        font-weight: 500
-        box-shadow: 0 2px 8px var(--shadow)
         transition: all 0.3s ease
+        border: 1px solid rgba(255, 255, 255, 0.1)
         
         &:hover
-            background: var(--bg-card)
+            background: var(--accent-color)
+            color: #fff
             transform: translateY(-2px)
-            box-shadow: 0 4px 12px var(--shadow)
-            
-    .current
-        background: var(--accent-color)
-        color: #fff
-        
-        &:hover
-            background: var(--accent-hover)
+            border-color: var(--accent-color)
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3)
+
+        &.current
+            background: var(--accent-color)
+            color: #fff
+            border-color: var(--accent-color)
 
 // 页脚样式
 footer
@@ -456,9 +528,26 @@ footer
     text-align: center
     position: relative
     z-index: 1
+    margin-top: auto
+
+    @media (max-width: var(--mobile-width))
+        padding: 1rem 0
+        
+        p
+            flex-direction: column
+            gap: 0.5rem
+            margin: 0
+            line-height: 1.5
+            
+            .footer-divider
+                display: none
+            
+            .theme-info
+                font-size: 0.8rem
 
     .container
         margin: 0 auto
+        padding: 0 1rem
         
     .footer-divider
         margin: 0 0.8rem
@@ -470,6 +559,7 @@ footer
             text-decoration: none
             font-weight: 500
             transition: all 0.3s ease
+            opacity: 0.8
             
             &:hover
                 color: var(--accent-hover)
@@ -608,6 +698,16 @@ pre, code
     border-radius: var(--radius-md)
     box-shadow: 0 4px 12px var(--shadow)
     overflow-x: auto
+    
+    @media (max-width: var(--mobile-width))
+        margin: 1rem 0
+        padding: 0.75rem
+        
+        .gutter
+            display: none
+        
+        .code
+            padding-left: 0
     
     pre
         margin: 0
