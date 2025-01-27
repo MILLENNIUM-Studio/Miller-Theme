@@ -116,16 +116,29 @@
             
             menuToggle.addEventListener('click', function() {
                 menuToggle.classList.toggle('active');
-                menuOverlay.classList.toggle('active');
-                document.body.style.overflow = menuOverlay.classList.contains('active') ? 'hidden' : '';
+                menuOverlay.style.display = menuOverlay.style.display === 'block' ? 'none' : 'block';
+                
+                if (menuOverlay.style.display === 'block') {
+                    // 强制重排以触发过渡动画
+                    menuOverlay.offsetHeight;
+                    menuOverlay.style.opacity = '1';
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    menuOverlay.style.opacity = '0';
+                    setTimeout(() => {
+                        document.body.style.overflow = '';
+                    }, 300);
+                }
             });
             
-            // 点击菜单外部关闭菜单
             menuOverlay.addEventListener('click', function(e) {
                 if (e.target === menuOverlay) {
                     menuToggle.classList.remove('active');
-                    menuOverlay.classList.remove('active');
-                    document.body.style.overflow = '';
+                    menuOverlay.style.opacity = '0';
+                    setTimeout(() => {
+                        menuOverlay.style.display = 'none';
+                        document.body.style.overflow = '';
+                    }, 300);
                 }
             });
             
