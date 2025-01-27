@@ -9,6 +9,7 @@
     <link rel="shortcut icon" type="image/png" href="https://ooo.0x0.ooo/2025/01/24/OGr4hS.png">
     <title><%= page.title || config.title %></title>
     <%- css('css/style.css') %>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
     <header>
@@ -37,6 +38,41 @@
         </div>
         <div class="menu-overlay">
             <nav class="menu-content">
+                <div class="menu-section">
+                    <h3>社交媒体</h3>
+                    <ul class="social-links">
+                        <li>
+                            <a href="https://github.com/MILLENNIUM-Studio" target="_blank" title="Github">
+                                <i class="fab fa-github"></i>
+                                <span>Github</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gitee.com/millennium_x" target="_blank" title="Gitee">
+                                <i class="fab fa-git-alt"></i>
+                                <span>Gitee</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="mailto:millenniumstudio907@gmail.com" title="Email">
+                                <i class="fas fa-envelope"></i>
+                                <span>Email</span>
+                            </a>
+                        </li>
+                        <li>
+                            <div class="wechat-link">
+                                <i class="fab fa-weixin"></i>
+                                <span>WeChat</span>
+                            </div>
+                        </li>
+                        <li>
+                            <a href="https://www.facebook.com/profile.php?id=61572657804568" target="_blank" title="Facebook">
+                                <i class="fab fa-facebook"></i>
+                                <span>Facebook</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
                 <div class="menu-section">
                     <h3>分类</h3>
                     <div class="category-list">
@@ -92,7 +128,34 @@
                     document.body.style.overflow = '';
                 }
             });
+            
+            // 微信二维码处理
+            const wechatLink = document.querySelector('.wechat-link');
+            const qrModal = document.querySelector('.qr-modal');
+            const qrOverlay = document.querySelector('.qr-overlay');
+            
+            wechatLink.addEventListener('click', function(e) {
+                e.stopPropagation();
+                qrModal.classList.add('active');
+                qrOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+            
+            qrOverlay.addEventListener('click', function() {
+                qrModal.classList.remove('active');
+                qrOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            });
         });
     </script>
+
+    <!-- 二维码弹窗 -->
+    <div class="qr-modal">
+        <div class="qr-content">
+            <img src="/images/QRCode.jpg" alt="WeChat QR Code">
+            <p class="qr-tip">扫描二维码添加微信</p>
+        </div>
+    </div>
+    <div class="qr-overlay"></div>
 </body>
 </html> 
